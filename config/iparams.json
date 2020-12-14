@@ -1,1 +1,9 @@
-{}
+{
+  "apiKey": {
+    "display_name": "Jotform API key",
+    "description": "Please enter your Jotform API key",
+    "type": "text",
+    "required": true,
+    "secure": true
+  }
+}

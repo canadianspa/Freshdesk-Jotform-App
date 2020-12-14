@@ -1,0 +1,21 @@
+#dropdown {
+  margin: 4px;
+  border: 1px solid #cfd7df;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 1px 12px 1px 12px;
+  overflow-y: hidden;
+  min-height: 32px;
+}
+
+#dropdown:hover {
+  border: 1px solid #475867;
+  transition: 0.2s linear;
+}
+
+#dropdown:focus {
+  outline: 0;
+  border: 1px solid transparent;
+  box-shadow: 0 0 0 2px #2c5cc5;
+}

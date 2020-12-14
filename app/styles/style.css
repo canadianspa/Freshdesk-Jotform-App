@@ -8,9 +8,12 @@ html {
   box-sizing: inherit;
 }
 
-.fw-widget-wrapper {
-  display: flex;
-  flex-flow: column wrap;
-  justify-content: center;
-  align-items: center;
+.centre {
+  margin: 30px auto 0 auto;
+  text-align: center;
+}
+
+.submission {
+  border-radius: 5px;
+  padding: 5px;
 }

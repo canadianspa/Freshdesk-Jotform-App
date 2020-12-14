@@ -1,0 +1,17 @@
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 0.25em solid;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: spinner-border 0.75s linear infinite;
+  animation: spinner-border 0.75s linear infinite;
+  color: #2c5cc5 !important;
+}
+
+@keyframes spinner-border {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
