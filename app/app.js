@@ -1,60 +1,57 @@
 $(document).ready(onDocumentReady);
 
 function onDocumentReady() {
-  app.initialized().then(
-    function (client) {
-      window.client = client;
-      window.state = {};
+  app.initialized().then(initialize).catch(handleErr);
 
-      client.events.on("app.activated", onAppActivated);
-    },
-    function (error) {
-      handleErr(error);
-    }
-  );
+  function initialize(client) {
+    window.client = client;
+    window.state = {
+      cache: {},
+    };
+
+    client.events.on("app.activated", onAppActivated);
+  }
 }
 
 function onAppActivated() {
-  buildDropdown(forms, onDropdownChange);
+  getData("contact", (data) => (state.email = data.contact.email));
+  getData("ticket", (data) => (state.ticketId = data.ticket.id));
 
-  // CHANGE EMAIL
-  var params = {
-    formId: "62344566898371",
-    filter: { "q4:matches:email": "test@feltin.com" },
-  };
+  resize("300px");
+  buildDropdown(forms, onFormSelect);
 
-  fetchSubmissions(params).then(
-    function (submissions) {
-      $(".spinner").hide();
-
-      var container = $("#submissions-container");
-
-      $.map(submissions, function (submission) {
-        var answers = submission.answers;
-
-        var div = $("<div>")
-          .addClass("submission")
-          .append(`<div class="header">Submission Date</div>`)
-          .append(`<div>${answers["17"].prettyFormat}</div>`)
-          .append(`<div class="header">Product</div>`)
-          .append(`<div>${answers["21"].answer}</div>`);
-
-        div.appendTo(container);
-      });
-
-      console.log(submissions);
-    },
-    function (error) {
-      handleErr(error);
-    }
-  );
+  // Initial Load
+  onFormSelect(forms[0]);
 }
 
-function onDropdownChange(value) {
-  alert(value);
+function onFormSelect(form) {
+  var cache = state.cache[form.name];
+
+  if (cache) {
+    var submissions = cache;
+
+    buildSubmissions(form, submissions);
+  } else {
+    const { email, ticketId } = state;
+
+    showSpinner();
+
+    var params = {
+      formId: form.id,
+      filter: buildFormFilter(form, email, ticketId),
+    };
+
+    fetchSubmissions(params)
+      .then((submissions) => {
+        state.cache[form.name] = submissions;
+
+        hideSpinner();
+        buildSubmissions(form, submissions);
+      })
+      .catch(handleErr);
+  }
 }
 
 function handleErr(err) {
-  alert(err);
   console.error(`Error occured. Details:`, err);
 }

@@ -1,18 +1,18 @@
 function buildDropdown(options, onChange) {
   var dropdown = $("#dropdown");
 
-  $.map(options, function (option) {
-    const { name, id } = option;
+  dropdown.append(
+    options.map((option) => {
+      const { name, value } = option;
+      return $("<option>").text(name).val(value);
+    })
+  );
 
-    $("<option>").text(name).val(id).appendTo(dropdown);
-  });
+  dropdown.change((element) => {
+    var value = $(element.target).val();
 
-  addEventHandler(onChange);
-}
+    var option = options.find((opt) => opt.value === value);
 
-function addEventHandler(onChange) {
-  $("#dropdown").on("change", function () {
-    var value = $(this).val();
-    onChange(value);
+    onChange(option);
   });
 }

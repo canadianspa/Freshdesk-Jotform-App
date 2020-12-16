@@ -1,19 +1,21 @@
+const JOTFORM_API_URL = "https://api.jotform.com";
+const JOTFORM_APIKEY = "<%= iparam.apiKey %>";
+
 function fetchSubmissions(params) {
-  const { formId, filter } = params;
-
-  var filterStr = JSON.stringify(filter);
-
   return new Promise(function (resolve, reject) {
-    const url = `${JOTFORM_API_URL}/form/${formId}/submissions?apiKey=${JOTFORM_APIKEY}&filter=${filterStr}`;
+    const { formId, filter } = params;
 
-    client.request.get(url).then(
-      function (data) {
-        return resolve(JSON.parse(data.response).content);
-      },
-      function (error) {
+    var url = `${JOTFORM_API_URL}/form/${formId}/submissions?apiKey=${JOTFORM_APIKEY}&filter=${filter}`;
+
+    client.request
+      .get(url)
+      .then(function (data) {
+        var response = JSON.parse(data.response);
+        return resolve(response.content);
+      })
+      .catch(function (error) {
         console.error(error);
         return reject(error);
-      }
-    );
+      });
   });
 }
