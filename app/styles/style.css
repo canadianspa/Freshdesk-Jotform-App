@@ -2,59 +2,47 @@ html {
   box-sizing: border-box;
 }
 
+.fw-widget-wrapper {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+}
+
 *,
 *:after,
 *::before {
   box-sizing: inherit;
 }
 
-h4,
-h5 {
-  margin: 8px 5px 5px 5px;
-}
-
 .centre {
-  margin: 70px auto 0 auto;
-  text-align: center;
+  margin: 90px auto 0 auto;
 }
 
-#submissions-container {
-  max-height: 230px;
-  overflow-y: scroll;
-}
-
-#submissions-container > * {
-  margin-bottom: 6px;
+#submission-container {
+  width: 100%;
 }
 
 .submission {
-  margin: 4px;
-  border: 1px solid #cfd7df;
-  border-radius: 4px;
+  color: #183247;
   font-size: 14px;
-  font-weight: 400;
-  padding: 5px;
-}
-
-.submission:hover {
-  border: 1px solid #475867;
-  transition: 0.2s linear;
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 100%;
 }
 
 .submission > span {
   display: block;
   color: #6f7c87;
   font-size: 12px;
+  margin-top: 2px;
   margin-bottom: 2px;
 }
 
 .submission > button {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 5px;
+  margin: 5px auto 0 auto;
   transition: 50ms ease-in;
-  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.3px;
   color: #fff;
@@ -62,20 +50,14 @@ h5 {
   padding: 4px 15px 5px;
   border-radius: 4px;
   border: none;
-  outline: 0;
-  width: 100px;
+  width: 120px;
 }
 
 .product {
-  margin-left: 3px;
-  background-color: rgb(195, 240, 235);
+  margin-left: 5px;
   height: 27px;
-  font-size: 15px;
   padding: 0 8px;
   border-radius: 4px;
   display: inline-flex;
-  max-width: 100%;
-  vertical-align: middle;
   align-items: center;
-  font-size: 14px;
 }

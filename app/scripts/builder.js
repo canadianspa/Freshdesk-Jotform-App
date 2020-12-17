@@ -3,18 +3,26 @@ function hideSpinner() {
 }
 
 function showSpinner() {
-  emptySubmissionsContainer();
+  emptySubmissionContainer();
   $(".spinner").show();
 }
 
-function emptySubmissionsContainer() {
-  $("#submissions-container").empty();
+function emptySubmissionContainer() {
+  $("#submission-container").empty();
 }
 
-function buildSubmissions(form, submissions) {
-  emptySubmissionsContainer();
+function buildNoSubmissions() {
+  emptySubmissionContainer();
 
-  $("#submissions-container").append(
-    submissions.map((submission) => buildSubmissionContent(form, submission))
+  $("#submission-container").append(
+    `<div class="centre">No submissions found</div>`
   );
+}
+
+function buildSubmission(form, submission) {
+  emptySubmissionContainer();
+
+  var content = buildSubmissionContent(form, submission);
+
+  $("#submission-container").append(content);
 }

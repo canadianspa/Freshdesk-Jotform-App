@@ -1,0 +1,54 @@
+#navigator {
+  margin-top: 5px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+}
+
+#indicator {
+  grid-column: 1/4;
+  display: flex;
+  justify-content: center;
+}
+
+#indicator div {
+  height: 3px;
+  width: 16px;
+  margin-left: 3px;
+  margin-right: 3px;
+  background-color: #bbbbbb;
+}
+
+.selected {
+  background-color: #2f373d !important;
+}
+
+#navigator h4 {
+  text-align: center;
+}
+
+#navigator button,
+#navigator button:focus {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.arrow {
+  display: inline-block;
+  border: solid #5a636b;
+  border-width: 0 2px 2px 0;
+  padding: 3px;
+  height: 12px;
+  width: 12px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}

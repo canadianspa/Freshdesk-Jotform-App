@@ -1,54 +1,73 @@
 $(document).ready(onDocumentReady);
 
+var client;
+var state = {
+  cache: {},
+};
+
 function onDocumentReady() {
   app.initialized().then(initialize).catch(handleErr);
 
-  function initialize(client) {
-    window.client = client;
-    window.state = {
-      cache: {},
-    };
+  function initialize(_client) {
+    client = _client;
 
+    client.instance.resize({ height: "300px" });
     client.events.on("app.activated", onAppActivated);
   }
 }
 
-function onAppActivated() {
-  getData("contact", (data) => (state.email = data.contact.email));
-  getData("ticket", (data) => (state.ticketId = data.ticket.id));
-
-  resize("300px");
+async function onAppActivated() {
+  await loadData();
   buildDropdown(forms, onFormSelect);
 
-  // Initial Load
-  onFormSelect(forms[0]);
+  var intialForm = forms[0];
+  onFormSelect(intialForm);
+}
+
+async function loadData() {
+  var contactData = await client.data.get("contact");
+  state.email = contactData.contact.email;
+
+  var ticketData = await client.data.get("ticket");
+  state.ticketId = ticketData.ticket.id;
 }
 
 function onFormSelect(form) {
-  var cache = state.cache[form.name];
+  var cache = state.cache[form.id];
 
   if (cache) {
     var submissions = cache;
 
-    buildSubmissions(form, submissions);
+    buildContent(form, submissions);
   } else {
-    const { email, ticketId } = state;
-
     showSpinner();
 
     var params = {
-      formId: form.id,
-      filter: buildFormFilter(form, email, ticketId),
+      formId: form.jotformId,
+      filter: buildFormFilter(form, state.email, state.ticketId),
     };
 
     fetchSubmissions(params)
-      .then((submissions) => {
-        state.cache[form.name] = submissions;
+      .then(function (submissions) {
+        state.cache[form.id] = submissions;
 
+        buildContent(form, submissions);
         hideSpinner();
-        buildSubmissions(form, submissions);
       })
       .catch(handleErr);
+  }
+}
+
+function buildContent(form, submissions) {
+  if (submissions.length === 0) {
+    emptySubmissionContainer();
+    emptyNavigator();
+  } else {
+    buildSubmission(form, submissions[0]);
+
+    buildNavigator(submissions.length, function (index) {
+      buildSubmission(form, submissions[index]);
+    });
   }
 }
 

@@ -5,7 +5,7 @@ function fetchSubmissions(params) {
   return new Promise(function (resolve, reject) {
     const { formId, filter } = params;
 
-    var url = `${JOTFORM_API_URL}/form/${formId}/submissions?apiKey=${JOTFORM_APIKEY}&filter=${filter}`;
+    var url = `${JOTFORM_API_URL}/form/${formId}/submissions?apiKey=${JOTFORM_APIKEY}&filter=${filter}&limit=100`;
 
     client.request
       .get(url)
