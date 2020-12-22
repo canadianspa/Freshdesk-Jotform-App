@@ -12,13 +12,13 @@
 
           function initialize(client) {
             client.instance.context().then(handleContext).catch(handleErr);
+          }
 
-            function handleContext(context) {
-              var submissionId = context.data.submissionId;
-              var url = `https://www.jotform.com/submission/${submissionId}`;
+          function handleContext(context) {
+            var submissionId = context.data.submissionId;
+            var url = `https://www.jotform.com/submission/${submissionId}`;
 
-              buildIframe(url);
-            }
+            buildIframe(url);
           }
 
           function buildIframe(url) {
