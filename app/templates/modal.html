@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <script src="https://static.freshdev.io/fdk/2.0/assets/fresh_client.js"></script>
+  </head>
+  <body>
+    <script>
+      document.onreadystatechange = function () {
+        if (document.readyState === "interactive") onDocumentReady();
+
+        function onDocumentReady() {
+          app.initialized().then(initialize).catch(handleErr);
+
+          function initialize(client) {
+            client.instance.context().then(handleContext).catch(handleErr);
+
+            function handleContext(context) {
+              var submissionId = context.data.submissionId;
+              var url = `https://www.jotform.com/submission/${submissionId}`;
+
+              buildIframe(url);
+            }
+          }
+
+          function buildIframe(url) {
+            var ifrm = document.createElement("iframe");
+
+            ifrm.setAttribute("src", url);
+            ifrm.style.width = "100%";
+            ifrm.style.height = "100%";
+
+            document.body.appendChild(ifrm);
+          }
+        }
+
+        function handleErr(err) {
+          console.error(`Error occured. Details:`, err);
+        }
+      };
+    </script>
+  </body>
+</html>

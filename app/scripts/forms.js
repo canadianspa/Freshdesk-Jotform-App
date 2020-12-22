@@ -41,15 +41,14 @@ function buildSubmissionContent(form, submission) {
 
   switch (form.id) {
     case 0:
-      var date = answers["17"].prettyFormat;
-      var formattedDate = moment(date, "MM-DD-YYYY").format("DD/MM/YYYY");
+      var date = answers["17"].answer;
 
       var product = answers["21"].answer;
       var style = buildProductColour(product);
       return $(`
           <div class="submission">
             <span>Purchase Date</span>
-            <div>${formattedDate}</div>
+            <div>${date.day}/${date.month}/${date.year}</div>
             <span>Product</span>
             <div class="product" style="${style}">${answers["21"].answer}</div>
             <span>Address</span>
@@ -57,7 +56,7 @@ function buildSubmissionContent(form, submission) {
             <div>${answers["5"].answer.city}</div>
             <div>${answers["5"].answer.state}</div>
             <div>${answers["5"].answer.postal}</div>
-            <button id="${submission.id}">View</button>
+            <button name="${submission.id}" id="view">View</button>
           </div>
         `);
     case 1:

@@ -17,6 +17,7 @@ html {
 
 .centre {
   margin: 90px auto 0 auto;
+  text-align: center;
 }
 
 #submission-container {
@@ -39,18 +40,20 @@ html {
   margin-bottom: 2px;
 }
 
-.submission > button {
+.submission > button,
+.submission > button:focus {
   display: block;
+  width: 120px;
   margin: 5px auto 0 auto;
+  padding: 4px 15px 5px;
+  border-radius: 4px;
+  color: #fff;
   transition: 50ms ease-in;
   font-weight: 500;
   letter-spacing: 0.3px;
-  color: #fff;
   background-image: linear-gradient(to bottom, #264966, #12344d);
-  padding: 4px 15px 5px;
-  border-radius: 4px;
   border: none;
-  width: 120px;
+  outline: 0;
 }
 
 .product {

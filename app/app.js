@@ -60,8 +60,8 @@ function onFormSelect(form) {
 
 function buildContent(form, submissions) {
   if (submissions.length === 0) {
-    emptySubmissionContainer();
     emptyNavigator();
+    buildNoSubmissions();
   } else {
     buildSubmission(form, submissions[0]);
 

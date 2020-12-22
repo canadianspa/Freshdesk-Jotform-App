@@ -25,4 +25,19 @@ function buildSubmission(form, submission) {
   var content = buildSubmissionContent(form, submission);
 
   $("#submission-container").append(content);
+
+  $("#view").click((event) => {
+    client.interface
+      .trigger("showModal", {
+        title: form.name,
+        template: "templates/modal.html",
+        data: { submissionId: event.target.name },
+      })
+      .then(function (data) {
+        // data - success message
+      })
+      .catch(function (error) {
+        // error - error object
+      });
+  });
 }
