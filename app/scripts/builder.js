@@ -36,10 +36,9 @@ function buildSubmission(form, submission) {
         data: submission,
       })
       .then(function (data) {
+        console.log(data);
         // data - success message
       })
-      .catch(function (error) {
-        // error - error object
-      });
+      .catch(handleErr);
   }
 }

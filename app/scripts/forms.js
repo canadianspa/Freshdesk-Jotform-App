@@ -30,7 +30,7 @@ function buildFormFilter(form, email, ticketId) {
       filter = { "q74:matches:ticketNumber": ticketId };
       break;
     default:
-      alert("Invalid form: ", form);
+      console.error("Invalid form, ", form);
   }
 
   return JSON.stringify(filter);
@@ -90,6 +90,6 @@ function buildSubmissionContent(form, submission) {
           </div>
         `);
     default:
-      alert("Invalid form");
+      console.error("Invalid form, ", form);
   }
 }
