@@ -26,12 +26,14 @@ function buildSubmission(form, submission) {
 
   $("#submission-container").append(content);
 
-  $("#view").click((event) => {
+  $("#view").click(showModal);
+
+  function showModal() {
     client.interface
       .trigger("showModal", {
-        title: form.name,
-        template: "templates/modal.html",
-        data: { submissionId: event.target.name },
+        title: `${form.name} Form`,
+        template: "modal/modal.html",
+        data: submission,
       })
       .then(function (data) {
         // data - success message
@@ -39,5 +41,5 @@ function buildSubmission(form, submission) {
       .catch(function (error) {
         // error - error object
       });
-  });
+  }
 }

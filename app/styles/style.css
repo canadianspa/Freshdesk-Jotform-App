@@ -25,6 +25,8 @@ html {
 }
 
 .submission {
+  display: flex;
+  flex-direction: column;
   color: #183247;
   font-size: 14px;
   padding-left: 5px;
@@ -32,7 +34,11 @@ html {
   width: 100%;
 }
 
-.submission > span {
+.submission > div {
+  flex-grow: 1;
+}
+
+.submission span {
   display: block;
   color: #6f7c87;
   font-size: 12px;
