@@ -1,11 +1,15 @@
+var client;
+
 document.onreadystatechange = function () {
   if (document.readyState === "interactive") onDocumentReady();
 
   function onDocumentReady() {
     app.initialized().then(initialize).catch(handleErr);
 
-    function initialize(client) {
-      client.instance.context().then(handleContext).catch(handleErr);
+    function initialize(_client) {
+      client = _client;
+
+      getContext().then(handleContext).catch(handleErr);
     }
 
     function handleContext(context) {
@@ -20,90 +24,42 @@ document.onreadystatechange = function () {
           question.type !== "control_widget" &&
           question.name !== "doubleclickTo"
         ) {
-          buildCell(question);
+          buildFormElement(question);
         }
       });
     }
   }
 
-  function buildCell(question) {
-    const { type, text, answer, prettyFormat } = question;
+  function buildFormElement(question) {
+    var cell = buildCell(document.body);
 
-    var cell = buildTextElement(document.body, { className: "cell" });
+    buildHeader(cell, question);
 
-    buildTextElement(cell, { content: text, className: "header" });
-
-    switch (type) {
+    switch (question.type) {
       case "control_phone":
-        var content = prettyFormat;
-        buildTextElement(cell, { content: content });
+        buildPhone(cell, question);
         break;
       case "control_fileupload":
-        answer.map((url) => {
-          buildImgLinkElement(cell, url);
-        });
+        buildFileUpload(cell, question);
         break;
       case "control_datetime":
-        var content = `${answer.day}/${answer.month}/${answer.year}`;
-        buildTextElement(cell, { content: content });
+        buildDateTime(cell, question);
         break;
       case "control_dropdown":
-        var content = answer;
-        var className = "option";
-        var style = getProductColour(content);
-
-        buildTextElement(cell, {
-          content: content,
-          className: className,
-          style: style,
-        });
+        buildDropdown(cell, question);
         break;
       case "control_radio":
-        var content = answer ? answer : "Not given";
-        var className = "option";
-
-        if (answer === "Yes") className += " yes";
-        if (answer === "No") className += " no";
-
-        buildTextElement(cell, { content: content, className: className });
+        buildRadio(cell, question);
         break;
       case "control_address":
-        Object.keys(answer).map((key) => {
-          var content = answer[key];
-          buildTextElement(cell, { content: content });
-        });
+        buildAddress(cell, question);
         break;
       default:
-        var content = answer ? answer : "Not given";
-        buildTextElement(cell, { content: content });
+        buildDefault(cell, question);
         break;
     }
 
     document.body.appendChild(cell);
-  }
-
-  function buildTextElement(parent, { content, className, style }) {
-    var child = document.createElement("div");
-
-    if (content) child.innerHTML = content;
-    if (className) child.className = className;
-    if (style) child.style = style;
-
-    return parent.appendChild(child);
-  }
-
-  function buildImgLinkElement(parent, url) {
-    var link = document.createElement("a");
-    link.href = url;
-    link.target = "_blank";
-
-    var img = document.createElement("img");
-    img.src = url;
-    img.className = "image";
-
-    link.appendChild(img);
-
-    return parent.appendChild(link);
   }
 
   function handleErr(err) {

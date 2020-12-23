@@ -1,76 +1,69 @@
-$(document).ready(onDocumentReady);
-
 var client;
 var state = {
   cache: {},
 };
+var forms = [
+  { id: 0, name: "Warranty Registration", jotformId: "62344566898371" },
+  { id: 1, name: "Back Garden Delivery", jotformId: "73314427413349" },
+];
 
-function onDocumentReady() {
-  app.initialized().then(initialize).catch(handleErr);
+document.onreadystatechange = function () {
+  if (document.readyState === "interactive") onDocumentReady();
 
-  function initialize(_client) {
-    client = _client;
-
-    client.instance.resize({ height: "300px" });
-    client.events.on("app.activated", onAppActivated);
+  function onDocumentReady() {
+    app.initialized().then(onAppInitialized).catch(handleErr);
   }
-}
 
-async function onAppActivated() {
-  await loadData();
-  buildDropdown(forms, onFormSelect);
+  function onAppInitialized(_client) {
+    client = _client;
+    resize("300px");
 
-  var intialForm = forms[0];
-  onFormSelect(intialForm);
-}
+    var promises = [getData("contact"), getData("ticket")];
 
-async function loadData() {
-  var contactData = await client.data.get("contact");
-  state.email = contactData.contact.email;
+    Promise.all(promises)
+      .then((data) => {
+        state.email = data[0].contact.email;
+        state.ticketId = data[1].ticket.id;
 
-  var ticketData = await client.data.get("ticket");
-  state.ticketId = ticketData.ticket.id;
-}
-
-function onFormSelect(form) {
-  var cache = state.cache[form.id];
-
-  if (cache) {
-    var submissions = cache;
-
-    buildContent(form, submissions);
-  } else {
-    showSpinner();
-
-    var params = {
-      formId: form.jotformId,
-      filter: buildFormFilter(form, state.email, state.ticketId),
-    };
-
-    fetchSubmissions(params)
-      .then(function (submissions) {
-        state.cache[form.id] = submissions;
-
-        buildContent(form, submissions);
-        hideSpinner();
+        buildDropdown(forms, onFormSelect);
+        onFormSelect(forms[0]); // Load initial form
       })
       .catch(handleErr);
   }
-}
 
-function buildContent(form, submissions) {
-  if (submissions.length === 0) {
-    emptyNavigator();
-    buildNoSubmissions();
-  } else {
-    buildSubmission(form, submissions[0]);
+  function onFormSelect(form) {
+    var cache = state.cache[form.id];
 
-    buildNavigator(submissions.length, function (index) {
-      buildSubmission(form, submissions[index]);
-    });
+    if (cache) {
+      buildContent(form, cache);
+    } else {
+      showSpinner();
+
+      fetchSubmissions(form, state.email, state.ticketId)
+        .then((submissions) => {
+          state.cache[form.id] = submissions;
+
+          hideSpinner();
+          buildContent(form, submissions);
+        })
+        .catch(handleErr);
+    }
   }
-}
 
-function handleErr(err) {
-  console.error(`Error occured. Details:`, err);
-}
+  function buildContent(form, submissions) {
+    if (submissions.length === 0) {
+      emptyNavigator();
+      buildNoSubmissions();
+    } else {
+      buildSubmission(form, submissions[0]);
+      buildNavigator(submissions.length, function (index) {
+        console.log(submissions);
+        buildSubmission(form, submissions[index]);
+      });
+    }
+  }
+
+  function handleErr(err) {
+    console.error(`Error occured. Details:`, err);
+  }
+};

@@ -7,21 +7,20 @@ function buildNavigator(length, onClick) {
 
   function navigate(direction) {
     var idx = index + direction;
+    console.log(idx);
 
     if (idx >= 0 && idx < length) {
       index = idx;
-      updateIndicator(idx);
+      setSelectedIndicator(idx);
       onClick(idx);
     }
   }
 
-  // prettier-ignore
-  function updateIndicator(idx) {
-    indicator
-        .children()
-        .removeClass("selected")
-        .eq(idx)
-        .addClass("selected");
+  function setSelectedIndicator(idx) {
+    var children = indicator.children();
+
+    children.removeClass("selected");
+    children.eq(idx).addClass("selected");
   }
 
   function addEventHandlers() {
