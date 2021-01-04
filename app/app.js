@@ -56,9 +56,8 @@ document.onreadystatechange = function () {
       buildNoSubmissions();
     } else {
       buildSubmission(form, submissions[0]);
-      buildNavigator(submissions.length, function (index) {
-        console.log(submissions);
-        buildSubmission(form, submissions[index]);
+      buildNavigator(submissions.length, function (i) {
+        buildSubmission(form, submissions[i]);
       });
     }
   }
