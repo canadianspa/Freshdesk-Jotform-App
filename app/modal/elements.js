@@ -9,49 +9,68 @@ function appendTextElement(parent, { content, className, style }) {
 }
 
 function appendImgElement(parent, url) {
-  var link = document.createElement("a");
-  link.href = url;
-  link.target = "_blank";
+  function onClick() {
+    var _window = window.open("", "_blank");
+
+    var img = _window.document.createElement("img");
+    img.src = url;
+    img.alt = "Form Image";
+    img.style.height = "100%";
+
+    _window.document.body.appendChild(img);
+  }
 
   var img = document.createElement("img");
   img.src = url;
+  img.alt = "Form Image";
   img.className = "image";
+  img.addEventListener("click", onClick);
 
-  link.appendChild(img);
-
-  return parent.appendChild(link);
+  return parent.appendChild(img);
 }
 
-function buildCell(body) {
-  return appendTextElement(body, { className: "cell" });
+function appendCell(body) {
+  var className = "cell";
+
+  return appendTextElement(body, {
+    className: className,
+  });
 }
 
-function buildHeader(cell, question) {
+function appendHeader(cell, question) {
   var content = question.text;
+  var className = "header";
 
-  appendTextElement(cell, { content: content, className: "header" });
+  appendTextElement(cell, {
+    content: content,
+    className: className,
+  });
 }
 
-function buildPhone(cell, question) {
+function appendPhone(cell, question) {
   var content = question.prettyFormat;
 
-  appendTextElement(cell, { content: content });
+  appendTextElement(cell, {
+    content: content,
+  });
 }
 
-function buildFileUpload(cell, question) {
+function appendFileUpload(cell, question) {
   question.answer.map((url) => {
     appendImgElement(cell, url);
   });
 }
 
-function buildDateTime(cell, question) {
+function appendDateTime(cell, question) {
   var answer = question.answer;
   var content = `${answer.day}/${answer.month}/${answer.year}`;
 
-  appendTextElement(cell, { content: content });
+  appendTextElement(cell, {
+    content: content,
+  });
 }
 
-function buildDropdown(cell, question) {
+function appendDropdown(cell, question) {
   var content = question.answer;
   var className = "option";
   var style = getProductColour(content);
@@ -63,7 +82,7 @@ function buildDropdown(cell, question) {
   });
 }
 
-function buildRadio(cell, question) {
+function appendRadio(cell, question) {
   var answer = question.answer;
   var content = answer ? answer : "Not given";
   var className = "option";
@@ -71,22 +90,29 @@ function buildRadio(cell, question) {
   if (answer === "Yes") className += " yes";
   if (answer === "No") className += " no";
 
-  appendTextElement(cell, { content: content, className: className });
+  appendTextElement(cell, {
+    content: content,
+    className: className,
+  });
 }
 
-function buildAddress(cell, question) {
+function appendAddress(cell, question) {
   var answer = question.answer;
 
   Object.keys(answer).map((key) => {
     var content = answer[key];
 
-    appendTextElement(cell, { content: content });
+    appendTextElement(cell, {
+      content: content,
+    });
   });
 }
 
-function buildDefault(cell, question) {
+function appendDefault(cell, question) {
   var answer = question.answer;
   var content = answer ? answer : "Not given";
 
-  appendTextElement(cell, { content: content });
+  appendTextElement(cell, {
+    content: content,
+  });
 }
