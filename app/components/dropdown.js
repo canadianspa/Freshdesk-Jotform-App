@@ -15,4 +15,7 @@ function buildDropdown(options, onChange) {
 
     onChange(option);
   });
+
+  // Load initial option
+  onChange(options[0]);
 }

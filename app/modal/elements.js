@@ -12,12 +12,8 @@ function appendImgElement(parent, url) {
   function onClick() {
     var _window = window.open("", "_blank");
 
-    var img = _window.document.createElement("img");
-    img.src = url;
-    img.alt = "Form Image";
-    img.style.height = "100%";
-
-    _window.document.body.appendChild(img);
+    var img = `<img src="${url}" alt="Form Image" height="100%"></img>`;
+    _window.document.write(img);
   }
 
   var img = document.createElement("img");

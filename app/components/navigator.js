@@ -1,16 +1,37 @@
-function buildNavigator(length, onClick) {
+function emptyNavigator() {
+  $("#indicator").empty();
+}
+
+function buildNavigator(options, onClick) {
   var index = 0;
-  var indicator = $("#indicator").empty();
 
-  indicator.append("<div></div>".repeat(length));
+  var indicator = $("#indicator")
+    .empty()
+    .append("<div></div>".repeat(options.length));
 
-  function navigate(direction) {
+  addEventHandlers();
+  onNavigateClick(0); // Load initial option
+
+  function addEventHandlers() {
+    // Remove previous event handlers
+    $("#button-right").off("click");
+    $("#button-left").off("click");
+
+    $("#button-right").click(function () {
+      onNavigateClick(1);
+    });
+    $("#button-left").click(function () {
+      onNavigateClick(-1);
+    });
+  }
+
+  function onNavigateClick(direction) {
     var idx = index + direction;
 
-    if (idx >= 0 && idx < length) {
+    if (idx >= 0 && idx < options.length) {
       index = idx;
       setSelectedIndicator(idx);
-      onClick(idx);
+      onClick(options[idx]);
     }
   }
 
@@ -20,19 +41,4 @@ function buildNavigator(length, onClick) {
     children.removeClass("selected");
     children.eq(idx).addClass("selected");
   }
-
-  function addEventHandlers() {
-    // Remove previous event handlers
-    $("#button-right").off("click");
-    $("#button-left").off("click");
-    $("#button-right").click(() => navigate(1));
-    $("#button-left").click(() => navigate(-1));
-  }
-
-  addEventHandlers();
-  navigate(0); // Add "selected" class to first element
-}
-
-function emptyNavigator() {
-  $("#indicator").empty();
 }

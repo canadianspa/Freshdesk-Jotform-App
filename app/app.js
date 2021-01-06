@@ -1,34 +1,27 @@
 var client;
 var state = {
+  email: null,
   cache: {},
 };
+
 var forms = [
   { id: 0, name: "Warranty Registration", jotformId: "62344566898371" },
   { id: 1, name: "Back Garden Delivery", jotformId: "73314427413349" },
 ];
 
-document.onreadystatechange = function () {
-  if (document.readyState === "interactive") onDocumentReady();
+document.addEventListener("DOMContentLoaded", () => {
+  app.initialized().then(initialize).catch(handleErr);
 
-  function onDocumentReady() {
-    app.initialized().then(onAppInitialized).catch(handleErr);
+  function initialize(_client) {
+    client = _client;
+
+    resize("300px");
+    getData("contact").then(load).catch(handleErr);
   }
 
-  function onAppInitialized(_client) {
-    client = _client;
-    resize("300px");
-
-    var promises = [getData("contact"), getData("ticket")];
-
-    Promise.all(promises)
-      .then((data) => {
-        state.email = data[0].contact.email;
-        state.ticketId = data[1].ticket.id;
-
-        buildDropdown(forms, onFormSelect);
-        onFormSelect(forms[0]); // Load initial form
-      })
-      .catch(handleErr);
+  function load(data) {
+    state.email = data.contact.email;
+    buildDropdown(forms, onFormSelect);
   }
 
   function onFormSelect(form) {
@@ -39,14 +32,16 @@ document.onreadystatechange = function () {
     } else {
       showSpinner();
 
-      fetchSubmissions(form, state.email, state.ticketId)
-        .then((submissions) => {
-          state.cache[form.id] = submissions;
-
-          hideSpinner();
-          buildContent(form, submissions);
-        })
+      fetchSubmissions(form, state.email)
+        .then(handleSubmissions)
         .catch(handleErr);
+
+      function handleSubmissions(submissions) {
+        state.cache[form.id] = submissions;
+
+        hideSpinner();
+        buildContent(form, submissions);
+      }
     }
   }
 
@@ -55,9 +50,8 @@ document.onreadystatechange = function () {
       emptyNavigator();
       buildNoSubmissions();
     } else {
-      buildSubmission(form, submissions[0]);
-      buildNavigator(submissions.length, function (i) {
-        buildSubmission(form, submissions[i]);
+      buildNavigator(submissions, (submission) => {
+        buildSubmission(form, submission);
       });
     }
   }
@@ -65,4 +59,4 @@ document.onreadystatechange = function () {
   function handleErr(err) {
     console.error(`Error occured. Details:`, err);
   }
-};
+});

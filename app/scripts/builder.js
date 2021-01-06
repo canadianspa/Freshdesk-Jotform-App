@@ -39,7 +39,6 @@ function buildSubmissionContent(form, submission) {
   switch (form.id) {
     case 0:
       var date = answers["17"].answer;
-
       var product = answers["21"].answer;
       var style = getProductColour(product);
       return $(`

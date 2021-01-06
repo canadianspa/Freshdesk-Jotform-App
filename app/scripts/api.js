@@ -1,15 +1,13 @@
 const JOTFORM_API_URL = "https://api.jotform.com";
 const JOTFORM_APIKEY = "<%= iparam.apiKey %>";
 
-function fetchSubmissions(form, email, ticketId) {
+function fetchSubmissions(form, email) {
   var filter = (() => {
     switch (form.id) {
       case 0:
         return { "q4:matches:email": email };
       case 1:
         return { "q4:matches:email4": email };
-      case 2:
-        return { "q74:matches:ticketNumber": ticketId };
     }
   })();
 
