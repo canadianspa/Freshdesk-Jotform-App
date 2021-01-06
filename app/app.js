@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
       emptyNavigator();
       buildNoSubmissions();
     } else {
-      buildNavigator(submissions, (submission) => {
+      buildNavigator(submissions, function (submission) {
         buildSubmission(form, submission);
       });
     }

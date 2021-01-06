@@ -14,9 +14,8 @@ function emptySubmissionContainer() {
 function buildNoSubmissions() {
   emptySubmissionContainer();
 
-  $("#submission-container").append(
-    `<div class="centre">No submissions found</div>`
-  );
+  var div = `<div class="centre">No submissions found</div>`;
+  $("#submission-container").append(div);
 }
 
 function buildSubmission(form, submission) {
@@ -29,7 +28,9 @@ function buildSubmission(form, submission) {
   var template = "modal/modal.html";
   var data = submission;
 
-  $("#view").click(() => showModal(title, template, data));
+  $("#view").click(function () {
+    showModal(title, template, data);
+  });
 }
 
 // prettier-ignore
